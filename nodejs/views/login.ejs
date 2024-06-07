@@ -8,30 +8,32 @@
     <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="card mt-5">
-                    <div class="card-body">
-                        <h2 class="card-title text-center">Login</h2>
-                        <form action="/login" method="POST">
-                            <div class="form-group">
-                                <label for="id">ID:</label>
-                                <input type="text" placeholder="아이디" class="form-control" id="userId" name="user_id" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="pw">Password:</label>
-                                <input type="password" placeholder="비밀번호" class="form-control" id="password" name="user_password" required>
-                            </div>
-                            <button type="submit" class="btn btn-dark btn-block">Login</button>                            
-                        </form>
-                        <form action="/signup" method="GET">
-                            <button type="submit" class="btn btn-secondary btn-block mt-2">회원가입</button>
-                        </form>
-                    </div>
+    <div class="container" id="wrapper">
+        <fieldset>
+            <legend class="header">지금 뭐 먹지?</legend>
+            <form action="/login" method="POST">
+                <div class="login"></div>
+                <div class="id">
+                    <input type="text" class="input01" id="userId" name="user_id" placeholder="아이디" required>
                 </div>
-            </div>
-        </div>
+                <p class="inputMsg nexonid"></p>
+                <div class="pass">
+                    <input type="password" id="password" name="user_password" class="input01" placeholder="비밀번호" required>
+                </div>
+                <p class="inputMsg password"></p>
+                <div class="btLogin">
+                    <button type="submit" class="button01">
+                        <span class="idLoginInnerWrap">ID 로그인</span>
+                    </button>
+                </div>
+            </form>
+
+        </fieldset>
+        <p class="loginMenu">
+			<a href="/signup" class="join">회원가입</a>
+			<a href="" class="schId" >ID 찾기</a>
+			<a href="" class="schPass">비밀번호 찾기</a>
+		</p>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
