@@ -1,0 +1,89 @@
+#wrapper {
+    max-width: 492px;
+    min-width: 360px;
+    min-height: 100%;
+    min-height: 100vh;
+    padding: 0 16px 200px;
+    margin: 0 auto;
+}
+.login {
+    padding-top: 60px;
+}
+.header {
+    min-width: 328px;
+    padding-top: 120px;
+    text-align: center;
+    display: block;
+    width: 120px;
+    font-weight: bold;
+    
+}
+body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: top;
+    border-radius: 0;
+    box-sizing: border-box;
+    -webkit-text-size-adjust: none;
+    touch-action: manipulation
+}
+
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.loginMenu {
+    position: relative;
+    height: 40px;
+    padding-top: 15px;
+}
+.loginMenu a{
+    font-weight: 700;
+    letter-spacing: -.6px;
+    color: #737881;
+    margin-right: 8px;
+    transition: all .15s linear;
+    vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    border-radius: 0;
+    box-sizing: border-box;
+}
+p {
+    letter-spacing: 20px;
+}
+div, body, a {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: top;
+    border-radius: 0;
+    box-sizing: border-box;
+    -webkit-text-size-adjust: none;
+    touch-action: manipulation
+}
+.btLogin button, .btn-primary {
+    width: 100%;
+    height: 60px;
+    font-size: 18px;
+    font-family: NEXON Gothic Bold;
+    color: #fff;
+    background-color: #17191d;
+    transition: all .15s linear
+}
+.id input,.otppass input,.pass input, .form-control {
+    width: 100%;
+    height: 56px;
+    padding: 18px 12px;
+    border: 1px solid #e5e8eb;
+    background-color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    outline: 0;
+    transition: border-color .15s linear
+}

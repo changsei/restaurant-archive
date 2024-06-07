@@ -1,16 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>메인 화면</title>
+    <title>지금 뭐 먹지?</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    
 </head>
 <body>
-    <h1>환영합니다!</h1>
-    <p>아래에서 원하는 기능을 선택해주세요.</p>
-    <div>
-        <a href="/login"><button>로그인</button></a>
-        <a href="/signup"><button>회원 가입</button></a>
+    <header class="page-header">
+        <h1>로고</h1>
+    </header>
+
+    <div class="content-container">
+        <nav class="left-menu">
+            <img src="img/메뉴.png" class="toggle-btn" id="left-toggle-btn" alt="Toggle Left Menu">
+            <ul>
+                <li>메뉴 1</li>
+                <li>메뉴 2</li>
+                <li>메뉴 3</li>
+            </ul>
+        </nav>
+
+        <section class="main-content">
+            <h1>메인 콘텐츠</h1>
+            <p>여기에 메인 콘텐츠가 들어갑니다.</p>
+        </section>
+
+        <aside class="right-menu">
+            <img src="img/회원정보.png" class="toggle-btn" id="right-toggle-btn" alt="Toggle Right Menu">
+            <ul class="right-menu-centered">
+                <li><a href="login.html"><img src="img/login.png"></a></li>
+                <li>메뉴 B</li>
+                <li>메뉴 C</li>
+            </ul>
+        </aside>
     </div>
+
+    <a href="/">홈 화면으로 돌아가기</a>
+    <script src="javascript/main.js"></script>
 </body>
 </html>
