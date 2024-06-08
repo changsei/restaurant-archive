@@ -5,7 +5,7 @@ class UserDao {
         this.dbPool = dbPool;
     }
 
-    async insertUser(userData) {
+    async addUser(userData) {
         let conn = null;
         try {
             conn = await this.dbPool.getConnection();
@@ -29,26 +29,23 @@ class UserDao {
         }
     }
     
-    async findUserByIdAndPassword(userId, passwordHash) {
+    async findUserById(userId) {
         let conn = null;
         try {
-            conn = await this.dbPool.getConnection();
-            await conn.beginTransaction();
+          conn = await this.dbPool.getConnection();
 
-            const sql = `SELECT * FROM User WHERE user_id = ? AND user_password_hash = ?`;
-            const params = [userId, passwordHash];
-            const [result] = await conn.query(sql, params);
-
-            await conn.commit();
-            return result.length > 0 ? result[0] : null;
+          const sql = `SELECT * FROM User WHERE user_id = ?`;
+          const [result] = await conn.query(sql, [userId]);
+          
+          return result.length > 0 ? result[0] : null;
         } catch (error) {
-            throw error;
+          throw error;
         } finally {
-            if (conn != null) {
-                conn.release();
-            }
+          if (conn) {
+            conn.release();
+          }
         }
-    }
+      }
 }
 
 module.exports = UserDao;
