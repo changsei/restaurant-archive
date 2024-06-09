@@ -1,17 +1,22 @@
 // 서버 포트, 랜더링 설정 
 const express = require('express');
 const session = require('express-session');
+const multer = require('multer');
 const ejs = require('ejs');
 const app = express();
 const port = 3000;
+const upload = multer();
 
 // 데이터 베이스 
 const UserDao = require('./db/dao/user-dao');
 const ReviewDAO = require('./db/dao/review-dao');
 const RestaurantDAO = require('./db/dao/restaurant-dao');
+const RestaurantTypeDao = require('./db/dao/restaurant-type-dao');
+
 const userDao = new UserDao();
 const reviewDAO = new ReviewDAO();
-const restaurantDAO = new RestaurantDAO();
+const restaurantDAO = new RestaurantDAO();  
+const restaurantTypeDao = new RestaurantTypeDao();
 
 // 뷰 엔진 처리 
 app.set('view engine', 'ejs');
@@ -57,7 +62,7 @@ app.get('/login', ensureNotLoggedIn, (req, res) => {
     res.render('login');
 });
 
-app.get('/main', ensureLoggedIn, (req, res) => {
+app.get('/main', (req, res) => {
   res.render('main');
 });
 
@@ -66,8 +71,55 @@ app.get('/signup', ensureNotLoggedIn, (req, res) => {
 });
 
 //음식점 등록 테스트
-app.get('/restaurant/add', ensureLoggedIn, (req, res) => {
-  res.render('restaurant_regist');
+app.get('/restaurant/regist', ensureLoggedIn, async (req, res) => {
+  const types = await restaurantTypeDao.getAllRestaurantTypes();
+  const restaurantTypes = types.map(type => ({
+    restaurantTypeId: type.restaurant_type_id, // 데이터베이스 필드를 새로운 필드 이름으로 매핑
+    restaurantType: type.restaurant_type
+  }));
+
+  res.render('restaurant/regist', { restaurantTypes: restaurantTypes });
+});
+
+app.get('/restaurant/search', ensureLoggedIn, async (req, res) => {
+  const types = await restaurantTypeDao.getAllRestaurantTypes();
+  const restaurantTypes = types.map(type => ({
+    restaurantTypeId: type.restaurant_type_id, 
+    restaurantType: type.restaurant_type
+  }));
+
+  res.render('restaurant/search', { restaurantTypes: restaurantTypes });
+});
+
+// 음식점 검색 테스트
+app.post('/restaurant/search', ensureLoggedIn, upload.none(), async (req, res, next) => {
+  const { 
+    restaurantRating, 
+    restaurantTakeout, 
+    restaurantTable, 
+    restaurantCity, 
+    restaurantType, 
+    restaurantOpenHour 
+  } = req.body;
+
+  console.log(restaurantRating, restaurantTakeout, restaurantTable, restaurantCity, restaurantType, restaurantOpenHour);
+
+  try {
+    const results = await restaurantDAO.searchRestaurants({
+      rating: restaurantRating, 
+      takeout: restaurantTakeout, 
+      table: restaurantTable, 
+      city: restaurantCity, 
+      type: restaurantType, 
+      openHour: restaurantOpenHour 
+    });
+
+    console.log(results);
+
+    res.json(results);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // 회원 가입 처리 
@@ -109,9 +161,10 @@ app.post('/login', ensureNotLoggedIn, async (req, res, next) => {
 }); 
 
 // 음식점 등록
-app.post('/restaurant/add', ensureLoggedIn, async (req, res, next) => {
+app.post('/restaurant/regist', ensureLoggedIn, async (req, res, next) => {
   const {
     restaurantName,
+    restaurantType,
     restaurantStartHours,
     restaurantEndHours,
     restaurantStartBreakHours,
@@ -129,6 +182,7 @@ app.post('/restaurant/add', ensureLoggedIn, async (req, res, next) => {
   try {
     const result = await restaurantDAO.addRestaurant({
       name: restaurantName,
+      type: restaurantType,
       startHours: restaurantStartHours,
       endHours: restaurantEndHours,
       startBreakHours: restaurantStartBreakHours,

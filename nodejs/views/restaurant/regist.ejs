@@ -13,11 +13,18 @@
 
 <body>
     <h1>테스트 입니다</h1>
-    <form action="/restaurant/add" method="POST">
+    <form action="/restaurant/regist" method="POST">
         <div>
             <label for="restaurantName">Restaurant Name:</label>
             <input type="text" id="restaurantName" name="restaurantName" required>
         </div>
+        <div>
+            <select name="restaurantType">
+                <% restaurantTypes.forEach(function(type) { %>
+                    <option value="<%= type.restaurantTypeId %>"><%= type.restaurantType %></option>
+                <% }); %>
+            </select>
+        </div>   
         <div>
             <label for="restaurantStartHours">Opening Hours:</label>
             <input type="number" id="restaurantStartHours" name="restaurantStartHours" required>
