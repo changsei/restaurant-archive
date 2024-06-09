@@ -3,9 +3,9 @@ const express = require('express');
 const session = require('express-session');
 const multer = require('multer');
 const ejs = require('ejs');
+const path = require('path');
 const app = express();
 const port = 3000;
-const upload = multer();
 
 // 데이터 베이스 
 const UserDao = require('./db/dao/user-dao');
@@ -17,6 +17,31 @@ const userDao = new UserDao();
 const reviewDAO = new ReviewDAO();
 const restaurantDAO = new RestaurantDAO();  
 const restaurantTypeDao = new RestaurantTypeDao();
+
+// 사진 저장 스토리지 설정
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      const category = req.query.category;
+      let uploadPath = path.join(__dirname, 'public', 'img');
+      if (category === 'restaurant') uploadPath += '/restaurant';
+      else if (category === 'food') uploadPath += '/food';
+      else if (category === 'review') uploadPath += '/review';
+      cb(null, uploadPath);
+  },
+  filename: function (req, file, cb) {
+      const ext = path.extname(file.originalname);
+      // 파일 이름에서 비-ASCII 문자 제거 및 공백을 하이픈으로 대체
+      const baseName = file.originalname.replace(ext, "")
+                                          .normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+                                          .replace(/[^a-zA-Z0-9\-]/g, '') 
+                                          .replace(/\s+/g, '-'); 
+      const filename = `${baseName}-${Date.now()}${ext}`;
+      cb(null, filename);
+  }
+});
+
+const upload = multer({ storage: storage });
+
 
 // 뷰 엔진 처리 
 app.set('view engine', 'ejs');
@@ -102,8 +127,6 @@ app.post('/restaurant/search', ensureLoggedIn, upload.none(), async (req, res, n
     restaurantOpenHour 
   } = req.body;
 
-  console.log(restaurantRating, restaurantTakeout, restaurantTable, restaurantCity, restaurantType, restaurantOpenHour);
-
   try {
     const results = await restaurantDAO.searchRestaurants({
       rating: restaurantRating, 
@@ -113,8 +136,6 @@ app.post('/restaurant/search', ensureLoggedIn, upload.none(), async (req, res, n
       type: restaurantType, 
       openHour: restaurantOpenHour 
     });
-
-    console.log(results);
 
     res.json(results);
   } catch (error) {
@@ -161,7 +182,7 @@ app.post('/login', ensureNotLoggedIn, async (req, res, next) => {
 }); 
 
 // 음식점 등록
-app.post('/restaurant/regist', ensureLoggedIn, async (req, res, next) => {
+app.post('/restaurant/regist', ensureLoggedIn, upload.single('restaurantPhoto'), async (req, res, next) => {
   const {
     restaurantName,
     restaurantType,
@@ -179,6 +200,9 @@ app.post('/restaurant/regist', ensureLoggedIn, async (req, res, next) => {
     restaurantTelephone
   } = req.body;
 
+  const photoPath = req.file.path;
+  console.log(photoPath);
+  
   try {
     const result = await restaurantDAO.addRestaurant({
       name: restaurantName,
