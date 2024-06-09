@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>음식점 상세 검색</title>
+</head>
+<body>
+    <h1>음식점 상세 검색</h1>
+    <form id="searchForm">
+        <div>
+            <label>별점:</label>
+            <input type="radio" name="restaurantRating" value="0.0" checked> 0.0 이상
+            <% [1, 2, 3, 4, 5].forEach(function(score) { %>
+                <input type="radio" name="restaurantRating" value="<%= score %>"> <%= score %>.0 이상
+            <% }); %>
+        </div>
+        <div>
+            <label>테이크아웃:</label>
+            <input type="radio" name="restaurantTakeout" value="true"> 가능
+            <input type="radio" name="restaurantTakeout" value="false"> 불가
+            <input type="radio" name="restaurantTakeout" value="none" checked> 상관없음
+        </div>
+        <div>
+            <label>테이블:</label>
+            <input type="radio" name="restaurantTable" value="true"> 있음
+            <input type="radio" name="restaurantTable" value="false"> 없음
+            <input type="radio" name="restaurantTable" value="none" checked> 상관없음
+        </div>
+        <div>
+            <label>도시:</label>
+            <input type="text" name="restaurantCity" value="">
+        </div>
+        <div>
+            <label>음식점 타입:</label>
+            <select name="restaurantType">
+                <option value="0">선택하세요</option>
+                <% restaurantTypes.forEach(function(type) { %>
+                    <option value="<%= type.restaurantTypeId %>"><%= type.restaurantType %></option>
+                <% }); %>
+            </select>
+        </div>
+        <div>
+            <label>운영 시간:</div>
+            <input type="number" name="restaurantOpenHour" value="0">시 이후
+        </div>
+        <button type="button" onclick="searchRestaurants()">검색</button>
+    </form>
+    <div id="searchResults"></div>
+    <a href="/">홈 화면으로 돌아가기</a>
+    <script src="/javascript/search.js"></script>
+</body>
+</html>
