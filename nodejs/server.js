@@ -90,7 +90,12 @@ app.get('/login', ensureNotLoggedIn, (req, res) => {
 app.get('/main', (req, res) => {
   res.render('main');
 });
-
+app.get('/map', (req, res) => {
+  res.render('map');
+});
+app.get('/user_review', (req, res) => {
+  res.render('user_review');
+});
 app.get('/signup', ensureNotLoggedIn, (req, res) => {
     res.render('signup'); 
 });
