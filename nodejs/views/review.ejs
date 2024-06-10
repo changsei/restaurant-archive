@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리뷰 작성</title>
+    <link rel="stylesheet" href="/css/review.css">
+</head>
+<body>
+    <div class="review-container">
+        <h1>리뷰 작성</h1>
+        <form action="/main" method="post">
+            <div class="star-rating">
+                <input type="radio" id="5-stars" name="rating" value="5" />
+                <label for="5-stars" class="star">★</label>
+                <input type="radio" id="4-stars" name="rating" value="4" />
+                <label for="4-stars" class="star">★</label>
+                <input type="radio" id="3-stars" name="rating" value="3" />
+                <label for="3-stars" class="star">★</label>
+                <input type="radio" id="2-stars" name="rating" value="2" />
+                <label for="2-stars" class="star">★</label>
+                <input type="radio" id="1-star" name="rating" value="1" />
+                <label for="1-star" class="star">★</label>
+            </div>
+            <textarea class="review-textarea" name="review" placeholder="후기를 작성해 주세요..."></textarea>
+            <button type="submit" class="submit-btn">리뷰 제출</button>
+        </form>
+    </div>
+</body>
+</html>

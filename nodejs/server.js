@@ -100,6 +100,12 @@ app.get('/restaurant/main', async (req, res) => {
 app.get('/map', (req, res) => {
   res.render('map');
 });
+app.get('/main', (req, res) => {
+  res.render('main');
+});
+app.get('/review', (req, res) => {
+  res.render('review');
+});
 app.get('/user_review', (req, res) => {
   res.render('user_review');
 });
