@@ -1,9 +1,11 @@
-body, html {
+body,
+html {
     height: 100%;
     margin: 0;
-    padding: 0;
+    padding: 20px;
     display: flex;
     flex-direction: column;
+    font: 400 14px 'Calibri', 'Arial', sans-serif;;
 }
 
 .page-header {
@@ -41,34 +43,33 @@ body, html {
 
 
 
-.left-menu ul, .right-menu ul {
+.left-menu ul,
+.right-menu ul {
     list-style: none;
     margin-top: 30px;
     padding: 5px;
 
-    
+
 }
 
-.left-menu li , .right-menu li  {
+.left-menu li,
+.right-menu li {
     padding: 5px;
     margin-top: 15px;
 }
 
 
 
-.left-menu.collapsed, .right-menu.collapsed {
+.left-menu.collapsed,
+.right-menu.collapsed {
     width: 50px;
 }
 
-.left-menu.collapsed ul, .right-menu.collapsed ul {
+.left-menu.collapsed ul,
+.right-menu.collapsed ul {
     display: none;
 }
 
-.main-content {
-    flex-grow: 1;
-    background-color: #fff;
-    padding: 20px;
-}
 
 .toggle-btn {
     width: 30px;
@@ -95,21 +96,22 @@ body, html {
 }
 
 
-.right-menu-centered li{
+.right-menu-centered li {
     display: flex;
     justify-content: center;
-    padding: 0; 
+    padding: 0;
 }
 
 
-.left-menu-centered li{
+.left-menu-centered li {
     display: flex;
     justify-content: center;
-    padding: 0; 
+    padding: 0;
 }
 
 
-.btLogin button, .btn-primary {
+.btLogin button,
+.btn-primary {
     width: 200px;
     height: 60px;
     font-size: 18px;
@@ -118,7 +120,9 @@ body, html {
     background-color: #17191d;
     transition: all .15s linear
 }
-.btLogout button, .btn-primary {
+
+.btLogout button,
+.btn-primary {
     width: 200px;
     height: 60px;
     font-size: 18px;
@@ -127,15 +131,18 @@ body, html {
     background-color: #17191d;
     transition: all .15s linear
 }
+
 .image-slider {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    height: 500px; /* 슬라이더의 높이를 설정 */
+    height: 500px;
+    /* 슬라이더의 높이를 설정 */
 }
 
 .slider-image {
-    width: 100%; /* 이미지 폭을 슬라이더에 맞게 조정 */
+    width: 100%;
+    /* 이미지 폭을 슬라이더에 맞게 조정 */
     transition: transform 0.5s ease-in-out;
 }
 
@@ -143,4 +150,176 @@ body, html {
     display: flex;
     justify-content: center;
     margin-top: 10px;
+}
+
+/* sets */
+
+/*테이블 css*/
+@media screen and (max-width: 23.5em) {
+    /* $gl-ms: up to 360px */
+}
+
+@media screen and (max-width: 35.5em) {
+    /* $gl-xs: up to 568px */
+}
+
+@media screen and (max-width: 48em) {
+    /* $gl-sm: max 768px */
+}
+
+@media screen and (max-width: 64em) {
+    /* $gl-md: max 1024px */
+}
+
+@media screen and (max-width: 80em) {
+    /* $gl-lg: max 1280px */
+}
+
+/* table style */
+
+table {
+    border-spacing: 1;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+    max-width: 800px;
+    width: 75%;
+    margin: 0 auto;
+    position: relative;
+}
+
+table * {
+    position: relative;
+}
+
+table td,
+table th {
+    padding-left: 8px;
+}
+
+table thead tr {
+    height: 60px;
+    background: #FFED86;
+    font-size: 16px;
+}
+
+table tbody tr {
+    height: 48px;
+    border-bottom: 1px solid #E3F1D5;
+}
+
+table tbody tr:last-child {
+    border: 0;
+}
+
+table td,
+table th {
+    text-align: left;
+}
+
+table td.l,
+table th.l {
+    text-align: right;
+}
+
+table td.c,
+table th.c {
+    text-align: center;
+}
+
+table td.r,
+table th.r {
+    text-align: center;
+}
+
+@media screen and (max-width: 35.5em) {
+    table {
+        display: block;
+    }
+
+    table>*,
+    table tr,
+    table td,
+    table th {
+        display: block;
+    }
+
+    table thead {
+        display: none;
+    }
+
+    table tbody tr {
+        height: auto;
+        padding: 8px 0;
+    }
+
+    table tbody tr td {
+        padding-left: 45%;
+        margin-bottom: 12px;
+    }
+
+    table tbody tr td:last-child {
+        margin-bottom: 0;
+    }
+
+    table tbody tr td:before {
+        position: absolute;
+        font-weight: 700;
+        width: 40%;
+        left: 10px;
+        top: 0;
+    }
+
+    table tbody tr td:nth-child(1):before {
+        content: "Code";
+    }
+
+    table tbody tr td:nth-child(2):before {
+        content: "Stock";
+    }
+
+    table tbody tr td:nth-child(3):before {
+        content: "Cap";
+    }
+
+    table tbody tr td:nth-child(4):before {
+        content: "Inch";
+    }
+
+    table tbody tr td:nth-child(5):before {
+        content: "Box Type";
+    }
+}
+
+blockquote {
+    color: white;
+    text-align: center;
+}
+
+/*별점*/
+.star-rating {
+    display: flex;
+}
+
+.star {
+    appearance: none;
+    padding: 1px;
+}
+
+.star::after {
+    content: '☆';
+    color: hsl(60, 80%, 45%);
+    font-size: 20px;
+}
+
+.star:hover::after,
+.star:has(~ .star:hover)::after,
+.star:checked::after,
+.star:has(~ .star:checked)::after {
+    content: '★';
+}
+
+.star:hover~.star::after {
+    content: '☆';
 }
