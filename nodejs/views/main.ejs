@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>지금 뭐 먹지?</title>
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    
 </head>
 <body>
     <header class="page-header">
@@ -88,7 +90,57 @@
         </nav>
 
         <section class="main-content">
+            <h1>Best 맛집</h1>
             
+            <!-- Swiper 슬라이드 추가 -->
+            <div class="swiper-container mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div>
+                            <h2>음식점 이름1</h2>
+                            <p>주소</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div>
+                            <h2>음식점 이름2</h2>
+                            <p>주소</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div>
+                            <h2>음식점 이름3</h2>
+                            <p>주소</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div>
+                            <h2>음식점 이름4</h2>
+                            <p>주소</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div>
+                            <h2>음식점 이름5</h2>
+                            <p>주소</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+                <!-- Add Navigation -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+            
+            <!-- 리뷰 리스트 추가 -->
+            <h2>Best 리뷰</h2>
+            <div class="review-list">
+                <div class="review-item">글제목</div>
+                <div class="review-item">글제목</div>
+                <div class="review-item">글제목</div>
+                <div class="review-item">글제목</div>
+            </div>
         </section>
 
         <aside class="right-menu">
@@ -103,5 +155,21 @@
 
     <a href="/">홈 화면으로 돌아가기</a>
     <script src="javascript/main.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 3,
+            spaceBetween: 20,
+            freeMode: true,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    </script>
 </body>
 </html>
