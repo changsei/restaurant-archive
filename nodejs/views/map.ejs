@@ -14,17 +14,101 @@
 
     <div class="content-container">
         <nav class="left-menu">
-            <img src="img/메뉴.png" class="toggle-btn" id="left-toggle-btn" alt="Toggle Left Menu">
-            <ul>
-                <li>메뉴 1</li>
-                <li>메뉴 2</li>
-                <li>메뉴 3</li>
+            <img src="img/회원정보.png" class="left-toggle-btn" id="left-toggle-btn" alt="Toggle Left Menu">
+            <ul class="left-menu-centered">
+                <li>
+                    <div class="btLogin" style="padding-top: 5px;">
+                        <button type="button" class="button01" data-a2s="click" data-object="P_LOGIN"
+                            data-option='{"Name":"ID_Login","Type":"IDLogin"}'>
+                            <span class="idLoginInnerWrap">
+                                ID 로그인
+                            </span>
+                        </button>
+                    </div>
+                </li>
+                <span>
+                    <li style="justify-content: left;">추천기능</li>
+                    <li>최근 작성 리뷰</li>
+                    <li>리뷰 작성 신규</li>
+                </span>
+                <hr>
+                <li>
+                <li>음식점 검색</li>
+                <li>음식점 타입</li>
+                <a href="#" id="menuB-toggle"><i class="ion-bag"></i> <span class="centered-text">별점</span></a>
+                <ul class="nav-flyout" id="menuB-flyout">
+                    <li>
+                        정말 맛있어요!
+                        <label>
+                            <input type="radio" name="menuB" value="Five">
+                            5점
+                        </label>
+                    </li>
+                    <li>
+                        맛있어요!
+                        <label>
+                            <input type="radio" name="menuB" value="Four">
+                            4점
+                        </label>
+                    </li>
+                    <li>
+                        보통이에요.
+                        <label>
+                            <input type="radio" name="menuB" value="Three">
+                            3점
+                        </label>
+                    </li>
+                    <li>
+                        쫌 별로에요
+                        <label>
+                            <input type="radio" name="menuB" value="Two">
+                            2점
+                        </label>
+                    </li>
+                    <li>
+                        음.....
+                        <label>
+                            <input type="radio" name="menuB" value="one">
+                            1점
+                        </label>
+                    </li>
+                </ul>
+                <li>영업시간</li>
+                <li>테이크 아웃 유무</li>
+                <li>지역</li>
+                <li>검색</li>
+                </li>
+                <hr>
+                <li>
+                <li>회원정보 수정</li>
+                <li>비밀번호 변경</li>
+                <li>회원 탈퇴</li>
+                </li>
+                <hr>
+                <li>
+                <li>기타</li>
+                <li>서비스 소개</li>
+
+                </li>
             </ul>
         </nav>
 
         <section class="main-content">
             <h1>메인 콘텐츠</h1>
-            <p>여기에 메인 콘텐츠가 들어갑니다.</p>
+            <section class="main-content">
+                <div id="map" style="width:700px;height:600px;"></div>
+                <script type="text/javascript"
+                    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=db4c7c687163471496644faa61ce9514"></script> <!--kakao 키 코드 입력-->
+                <script>
+                    var container = document.getElementById('map');
+                    var options = {
+                        center: new kakao.maps.LatLng(35.180837351545854, 128.55430309572276),
+                        level: 3
+                    };
+
+                    var map = new kakao.maps.Map(container, options);
+                </script>
+            </section>
         </section>
 
         <aside class="right-menu">
