@@ -87,8 +87,15 @@ app.get('/login', ensureNotLoggedIn, (req, res) => {
     res.render('login');
 });
 
-app.get('/main', (req, res) => {
-  res.render('main');
+app.get('/restaurant/main', async (req, res) => {
+  const types = await restaurantTypeDao.getAllRestaurantTypes();
+
+  const restaurantTypes = types.map(type => ({
+    restaurantTypeId: type.restaurant_type_id, 
+    restaurantType: type.restaurant_type
+  }));
+
+  res.render('restaurant/main', { restaurantTypes: restaurantTypes });
 });
 app.get('/map', (req, res) => {
   res.render('map');
@@ -100,29 +107,20 @@ app.get('/signup', ensureNotLoggedIn, (req, res) => {
     res.render('signup'); 
 });
 
+
 //음식점 등록 테스트
 app.get('/restaurant/regist', ensureLoggedIn, async (req, res) => {
-  const types = await restaurantTypeDao.getAllRestaurantTypes();
-  const restaurantTypes = types.map(type => ({
-    restaurantTypeId: type.restaurant_type_id, // 데이터베이스 필드를 새로운 필드 이름으로 매핑
-    restaurantType: type.restaurant_type
-  }));
-
-  res.render('restaurant/regist', { restaurantTypes: restaurantTypes });
-});
-
-app.get('/restaurant/search', ensureLoggedIn, async (req, res) => {
   const types = await restaurantTypeDao.getAllRestaurantTypes();
   const restaurantTypes = types.map(type => ({
     restaurantTypeId: type.restaurant_type_id, 
     restaurantType: type.restaurant_type
   }));
 
-  res.render('restaurant/search', { restaurantTypes: restaurantTypes });
+  res.render('restaurant/regist', { restaurantTypes: restaurantTypes });
 });
 
 // 음식점 검색 테스트
-app.post('/restaurant/search', ensureLoggedIn, upload.none(), async (req, res, next) => {
+app.post('/restaurant/search', upload.none(), async (req, res, next) => {
   const { 
     restaurantRating, 
     restaurantTakeout, 
@@ -177,7 +175,14 @@ app.post('/login', ensureNotLoggedIn, async (req, res, next) => {
     const result = await userDao.findUserById(userId);
     if (result && userPasswordHash == result.user_password_hash) {
       req.session.member = result;
-      res.render('main');
+      
+      const types = await restaurantTypeDao.getAllRestaurantTypes();
+      const restaurantTypes = types.map(type => ({
+        restaurantTypeId: type.restaurant_type_id, 
+        restaurantType: type.restaurant_type
+      }));
+    
+      res.render('restaurant/main', { restaurantTypes: restaurantTypes });
     } else {
       showRequestPage(res, "로그인 실패! 홈 화면으로 돌아가기", "/");
     }
@@ -253,7 +258,7 @@ function ensureLoggedIn(req, res, next) {
 
 function ensureNotLoggedIn(req, res, next) {
   if (req.session.member) {
-    showRequestPage(res, "이미 로그인 되었습니다. 메인 화면으로 돌아 갑니다.", '/main');
+    showRequestPage(res, "이미 로그인 되었습니다. 메인 화면으로 돌아 갑니다.", '/restaurant/main');
   } else {
     next(); 
   }

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>음식점 상세 검색</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="/css/restaurantmain.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-fluid">
+
+        <header>
+            <p class="p-2 border-bottom p-bold">지금 뭐 먹지?</p>
+        </header>
+
+        <main class="row">
+            <!-- 검색 사이드바 왼쪽 -->
+            <!-- 사이드 바 크기 조정 -->
+            <div class="col-md-3 col-lg-2 bg-light">
+                <div id="sidebar">
+                    <div>
+                        <p class="p-0"></p>
+                        <div class="row align-items-center p-bold">
+                            유저 이름
+                            <div class="col-auto">
+                                <button class="btn-toggle col-auto" type="button" aria-expanded="false">LogOut</button>
+                            </div>
+                        </div>
+                        <p class="p-1 border-bottom"></p>
+                    </div>
+
+                    <div>
+                        <p class="p-bold">추천 기능</p>
+                        <button class="btn btn-toggle align-items-center rounded collapsed" type="button"
+                            aria-expanded="false">최근 작성 리뷰 보기</button>
+                        <button class="btn btn-toggle align-items-center rounded collapsed" type="button"
+                            aria-expanded="false">리뷰 작성 하기</button>
+                        <!-- 항목 별 경계 -->
+                        <p class="p-2 border-bottom"></p>
+                    </div>
+                    <form id="searchForm" class="mb-3">
+                        <p class="p-bold">음식점 상세 검색</p>
+                        <!-- 별점 드랍다운 -->
+                        <div class="mb-3">
+                            <button class="btn btn-toggle align-items-center rounded collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#rating-collapse" aria-expanded="false">
+                                별점
+                            </button>
+                            <div class="collapse rating-option-right-padding" id="rating-collapse">
+                                <div class="mt-2">
+                                    <input type="radio" name="restaurantRating" value="0.0" checked> 0.0 이상
+                                    <!-- Generate options dynamically -->
+                                    <% [1, 2, 3, 4, 5].forEach(function(score) { %>
+                                        <input type="radio" name="restaurantRating" value="<%= score %>">
+                                        <%= score %>.0 이상
+                                            <% }); %>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 테이크아웃 드랍다운 -->
+                        <div class="mb-3">
+                            <button class="btn btn-toggle align-items-center rounded collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#takeout-collapse" aria-expanded="false">
+                                테이크아웃
+                            </button>
+                            <div class="collapse" id="takeout-collapse">
+                                <div class="mt-2">
+                                    <input type="radio" name="restaurantTakeout" value="true"> 가능
+                                    <input type="radio" name="restaurantTakeout" value="false"> 불가
+                                    <input type="radio" name="restaurantTakeout" value="none" checked> 상관없음
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 테이블 드랍다운 -->
+                        <div class="mb-3">
+                            <button class="btn btn-toggle align-items-center rounded collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#table-collapse" aria-expanded="false">
+                                테이블
+                            </button>
+                            <div class="collapse" id="table-collapse">
+                                <div class="mt-2">
+                                    <input type="radio" name="restaurantTable" value="true"> 있음
+                                    <input type="radio" name="restaurantTable" value="false"> 없음
+                                    <input type="radio" name="restaurantTable" value="none" checked> 상관없음
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 추가 검색 옵션 드랍다운 -->
+                        <div class="mb-3">
+                            <div>
+                                <button class="btn btn-toggle align-items-center rounded collapsed" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#moreOptions-collapse"
+                                    aria-expanded="false">
+                                    추가 옵션
+                                </button>
+                                <div class="collapse" id="moreOptions-collapse">
+                                    <div class="mt-2">
+                                        <label class="form-label">도시:</label>
+                                        <input type="text" name="restaurantCity" class="form-control"
+                                            placeholder="도시 이름을 입력하세요.">
+
+                                        <label class="form-label">음식점 타입:</label>
+                                        <select name="restaurantType" class="form-select">
+                                            <option value="0">선택하세요</option>
+                                            <% restaurantTypes.forEach(function(type) { %>
+                                                <option value="<%= type.restaurantTypeId %>">
+                                                    <%= type.restaurantType %>
+                                                </option>
+                                                <% }); %>
+                                        </select>
+
+                                        <label class="form-label">운영 시간:</label>
+                                        <input type="number" name="restaurantOpenHour" class="form-control" value="0"> 시
+                                        이후
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-toggle" type="button" onclick="searchRestaurants()"
+                            class="btn btn-primary">검색</button>
+                        <p class="p-2 border-bottom"></p>
+                    </form>
+                    <div>
+                        <p class="p-bold">회원 정보 관리</p>
+                        <button class="btn btn-toggle align-items-center rounded collapsed" type="button"
+                            aria-expanded="false">비밀번호 변경</button><br>
+                        <button class="btn btn-toggle align-items-center rounded collapsed" type="button"
+                            aria-expanded="false">회원 탈퇴</button>
+                        <!-- 항목 별 경계 -->
+                        <p class="p-2 border-bottom"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 메인 컨텐츠 영역 -->
+            <div class="col-md-8">
+                <div class="d-flex flex-column align-items-stretch bg-light"></div>
+            </div>
+
+            <!-- 결과 표시 영역 오른쪽 -->
+            <div class="col-md-3 col-lg-2">
+                <div class="d-flex flex-column align-items-stretch bg-light">
+                    <p class="p-3 border-bottom p-bold">검색 결과</p>
+                    <div id="searchResults" class="list-group list-group-flush scrollarea search-result-padding">
+                        <!--해당 부분에 동적으로 표시됨-->
+                    </div>
+                </div>
+            </div>
+    </div>
+    </main>
+
+    <footer>
+        <a href="/" class="btn btn-link btn btn-toggle">홈 화면으로 돌아가기</a>
+    </footer>
+    <script src="/javascript/search.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
