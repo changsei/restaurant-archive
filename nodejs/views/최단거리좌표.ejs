@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Kakao Map Example</title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=db4c7c687163471496644faa61ce9514"></script>
+    <style>
+        .img {
+            width: 5px;
+            height: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map" style="width:100%;height:500px;"></div>
+    <button id="addStart">출발지</button>
+    <button id="addMeal">식사 장소</button>
+    <button id="addCafe">디저트 가게</button>
+    <button id="findNearest">가장 가까운 좌표 찾기</button>
+    <div>
+        <h3>출발지점</h3>
+        <pre id="startCoords"></pre>
+    </div>
+    <div>
+        <h3>최단거리</h3>
+        <pre id="shortestCoords"></pre>
+    </div>
+    <div>
+        <h3>식당</h3>
+        <pre id="mealCoords"></pre>
+    </div>
+    <div>
+        <h3>디저트가게</h3>
+        <pre id="cafeCoords"></pre>
+    </div>
+    <script>
+        // Kakao 지도 API 초기화
+        const mapContainer = document.getElementById('map'); // 지도를 표시할 div
+        const mapOptions = {
+            center: new kakao.maps.LatLng(35.180807996443974, 128.55448365983173), // 지도의 중심 좌표
+            level: 5 // 지도의 확대 레벨
+        };
+        const map = new kakao.maps.Map(mapContainer, mapOptions); // 지도를 생성
+
+        // 출발지 좌표를 저장할 배열 (크기 1로 고정)
+        const start = [];
+
+        // 출발지와의 거리가 가장 가까운 좌표를 저장할 배열
+        const shortestDistanceCoordinates = [];
+
+        // 식사 장소 좌표를 저장할 배열
+        const meals = [];
+
+        // 카페 좌표를 저장할 배열
+        const cafes = [];
+
+        // 마커 추가 모드 (start, meal, cafe)
+        let markerMode = null;
+
+        // HTML 업데이트 함수
+        function updateHTML() {
+            document.getElementById('startCoords').textContent = start.length > 0 ? JSON.stringify(start[0], null, 2) : "";
+            document.getElementById('shortestCoords').textContent = JSON.stringify(shortestDistanceCoordinates, null, 2);
+            document.getElementById('mealCoords').textContent = JSON.stringify(meals, null, 2);
+            document.getElementById('cafeCoords').textContent = JSON.stringify(cafes, null, 2);
+        }
+
+        // 마커 클릭 이벤트 핸들러
+        kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+            const latlng = mouseEvent.latLng; // 클릭한 위치의 좌표
+            let markerImageSrc;
+            switch (markerMode) {
+                case 'start':
+                    markerImageSrc = 'img/start.png'; // 출발지 마커 이미지
+                    break;
+                case 'meal':
+                    markerImageSrc = 'img/food.png'; // 식사 장소 마커 이미지
+                    break;
+                case 'cafe':
+                    markerImageSrc = 'img/dessert.png'; // 디저트 가게 마커 이미지
+                    break;
+                default:
+                    return;
+            }
+
+            // 마커 이미지 생성
+            const markerImage = new kakao.maps.MarkerImage(
+                markerImageSrc,
+                new kakao.maps.Size(24, 35),
+                {
+                    offset: new kakao.maps.Point(12, 35)
+                }
+            );
+
+            // 마커 생성
+            const marker = new kakao.maps.Marker({
+                position: latlng,
+                map: map,
+                image: markerImage
+            });
+
+            // 출발지 설정
+            if (markerMode === 'start') {
+                start[0] = { lat: latlng.getLat(), lng: latlng.getLng() };
+                shortestDistanceCoordinates.push({ lat: latlng.getLat(), lng: latlng.getLng(), type: 'start' });
+            } else if (markerMode === 'meal') {
+                meals.push({ lat: latlng.getLat(), lng: latlng.getLng() });
+            } else if (markerMode === 'cafe') {
+                cafes.push({ lat: latlng.getLat(), lng: latlng.getLng() });
+            }
+
+            updateHTML();
+        });
+
+        // 버튼 클릭 이벤트 핸들러
+        document.getElementById('addStart').addEventListener('click', function () {
+            markerMode = 'start'; // 출발지 추가 모드로 설정
+        });
+
+        document.getElementById('addMeal').addEventListener('click', function () {
+            markerMode = 'meal'; // 식사 장소 추가 모드로 설정
+        });
+
+        document.getElementById('addCafe').addEventListener('click', function () {
+            markerMode = 'cafe'; // 디저트 가게 추가 모드로 설정
+        });
+
+        // 가장 가까운 좌표 찾기 함수
+        document.getElementById('findNearest').addEventListener('click', function () {
+            findNearestCoordinate();
+            updateHTML();
+        });
+
+        function findNearestCoordinate() {
+            if (start.length === 0) {
+                alert('출발지 좌표를 먼저 추가하세요.');
+                return;
+            }
+
+            const [startX, startY] = [start[0].lat, start[0].lng]; // 출발지 좌표
+            let otherCoordinates = [...meals, ...cafes]; // 식사 장소와 디저트 가게 좌표를 합친 배열
+            let nearestCoord = null;
+            let nearestDistance = Infinity;
+
+            // 출발지 다음으로 가장 가까운 좌표 찾기
+            if (meals.length > cafes.length) {
+                // 식당이 더 많은 경우, 출발지와 가까운 식당을 먼저 추가
+                for (const coord of meals) {
+                    const distance = Math.sqrt(Math.pow(startX - coord.lat, 2) + Math.pow(startY - coord.lng, 2));
+                    if (distance < nearestDistance) {
+                        nearestDistance = distance;
+                        nearestCoord = coord;
+                    }
+                }
+            } else {
+                // 디저트 가게가 더 많거나 같은 경우, 출발지와 가까운 디저트 가게를 먼저 추가
+                for (const coord of cafes) {
+                    const distance = Math.sqrt(Math.pow(startX - coord.lat, 2) + Math.pow(startY - coord.lng, 2));
+                    if (distance < nearestDistance) {
+                        nearestDistance = distance;
+                        nearestCoord = coord;
+                    }
+                }
+            }
+
+            if (nearestCoord) {
+                shortestDistanceCoordinates.push({ lat: nearestCoord.lat, lng: nearestCoord.lng, type: 'meal' });
+            }
+
+            // 최단 거리 순으로 모든 좌표를 추가하는 로직
+            while (shortestDistanceCoordinates.length < otherCoordinates.length) {
+                const lastCoord = shortestDistanceCoordinates[shortestDistanceCoordinates.length - 1];
+                nearestCoord = null;
+                nearestDistance = Infinity;
+
+                for (const coord of otherCoordinates) {
+                    const distance = Math.sqrt(Math.pow(lastCoord.lat - coord.lat, 2) + Math.pow(lastCoord.lng - coord.lng, 2));
+                    if (!shortestDistanceCoordinates.some(c => c.lat === coord.lat && c.lng === coord.lng) && distance < nearestDistance) {
+                        nearestDistance = distance;
+                        nearestCoord = coord;
+                    }
+                }
+
+                if (nearestCoord) {
+                    if (meals.some(c => c.lat === nearestCoord.lat && c.lng === nearestCoord.lng)) {
+                        shortestDistanceCoordinates.push({ lat: nearestCoord.lat, lng: nearestCoord.lng, type: 'meal' });
+                    } else if (cafes.some(c => c.lat === nearestCoord.lat && c.lng === nearestCoord.lng)) {
+                        shortestDistanceCoordinates.push({ lat: nearestCoord.lat, lng: nearestCoord.lng, type: 'cafe' });
+                    }
+                } else {
+                    break;
+                }
+            }
+            updateHTML();
+        }
+    </script>
+</body>
+
+</html>
