@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Restaurant</title>
+</head>
+<body>
+    <h1>Delete Restaurant</h1>
+    <form id="deleteRestaurantForm">
+        <label for="restaurantId">Restaurant ID:</label>
+        <input type="text" id="restaurantId" name="restaurantId" required>
+        <button type="submit">Delete Restaurant</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('deleteRestaurantForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const restaurantId = document.getElementById('restaurantId').value;
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Deleting...';
+
+            try {
+                const response = await fetch('/test', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ restaurantId })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    resultDiv.innerHTML = 'Restaurant deleted successfully';
+                } else {
+                    resultDiv.innerHTML = `Error: ${result.message}`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
