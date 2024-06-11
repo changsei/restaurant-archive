@@ -3,24 +3,18 @@ class PhotoMetaDataDao {
         this.dbPool = require('../db-pool-creator');
     }
 
-    async addPhotoMetaData(metaData) {
+    async addPhotoMetaData(photoId, categoryId) {
         let conn = null;
         try {
             conn = await this.dbPool.getConnection();
             await conn.beginTransaction();
 
-            const sql = `INSERT INTO photo_meta_data (
-                            photo_id, 
-                            photo_category_id
-                         ) VALUES (?, ?)`;
-            const params = [
-                metaData.photoId, 
-                metaData.photoCategoryId
-            ];
-            const [result] = await conn.query(sql, params);
+            const sqlPhotoMeta = `
+                INSERT INTO photo_meta_data (photo_id, photo_category_id) VALUES (?, ?)`;
+            const paramsPhotoMeta = [photoId, categoryId];
+            await conn.query(sqlPhotoMeta, paramsPhotoMeta);
 
             await conn.commit();
-            return result;
         } catch (error) {
             if (conn) {
                 await conn.rollback();

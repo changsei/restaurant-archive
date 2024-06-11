@@ -1,3 +1,4 @@
+/* 컨테이너 및 그리드 설정 */
 .container-fluid {
     padding-right: 0;
     padding-left: 0;
@@ -12,6 +13,7 @@
     padding-right: 0;
 }
 
+/* 헤더 및 푸터 스타일 */
 header {
     text-align: center;
     font-size: 30px;
@@ -27,27 +29,23 @@ header p {
     margin-bottom: 0;
 }
 
-.rating-option-right-padding {
-    padding-right: 8px;
-}
+/* 사이드 바 및 스크롤 영역 */
 
-.search-result-padding {
-    padding: 5px;
-}
-
-.p-bold {
-    font-weight: bold;
+#sidebar {
+    overflow-y: auto; /* 세로 스크롤바 활성화 */
+    height: calc(100vh - 70px); /* 뷰포트 높이에서 상단 여백 또는 헤더 높이를 제외 */
 }
 
 .scrollarea {
     overflow-y: auto;
-    height: calc(100vh - 48px);
-    /* 전체 높이에서 헤더의 높이를 뺀 나머지 높이 */
+    height: calc(100vh - 48px); /* 전체 높이에서 헤더의 높이를 뺀 나머지 높이 */
 }
 
 .flex-fill {
     flex: 1 1 auto;
 }
+
+/* 버튼 링크 스타일 */
 
 .btn-toggle:hover {
     background-color: #27292D;
@@ -56,11 +54,56 @@ header p {
 
 .btn-link {
     text-decoration: none;
+    color: black;
 }
 
-#sidebar {
-    overflow-y: auto;
-    /* 세로 스크롤바 활성화 */
-    height: calc(100vh - 70px);
-    /* 뷰포트 높이에서 상단 여백 또는 헤더 높이를 제외 */
+.btn-link-like-other {
+    background: none;
+    border: none;
+    text-align: center;
+    width: 100%;
+    text-decoration: none;
+    font-size: medium;
+    display: block;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.btn-link-like {
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
+    padding: 4px 0px;
+    text-decoration: none; 
+    display: block; 
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+/* 추가 스타일링 */
+
+.rating-option-right-padding {
+    padding-right: 8px;
+}
+
+.search-result-padding {
+    padding: 5px;
+}
+
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 왼쪽 정렬 */
+    width: 100%;
+    padding: 0 15px; /* 패딩 추가로 각 요소간 간격 조정 */
+}
+
+.p-bold {
+    font-weight: bold;
+}
+
+.link a:visited { 
+    color: black; 
+    text-decoration: none;
 }
